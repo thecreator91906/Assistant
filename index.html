@@ -409,28 +409,44 @@ function britishVoice() {
   ) || null;
 }
 
-function speak(text) {
-  if (!("speechSynthesis" in window)) {
-    addMessage("SYSTEM", "Speech output is not supported in this browser.");
-    return;
+function speak(text) }async function speak(text) {
+  const voiceServer = "https://atom-voice.6fz4445ndt.workers.dev/speak";
+
+  try {
+    window.speechSynthesis?.cancel();
+
+    const response = await fetch(voiceServer, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text: text })
+    });
+
+    if (!response.ok) {
+      throw new Error("Voice server returned error " + response.status);
+    }
+
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+
+    audio.onended = () => URL.revokeObjectURL(audioUrl);
+
+    audio.onerror = () => {
+      URL.revokeObjectURL(audioUrl);
+      addMessage("SYSTEM", "A.T.O.M. received an audio error.");
+    };
+
+    await audio.play();
+
+  } catch (error) {
+    console.error("A.T.O.M. voice error:", error);
+    addMessage(
+      "SYSTEM",
+      "A.T.O.M.'s voice could not start. Check the voice server and try again."
+    );
   }
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  const voice = britishVoice();
-
-  if (voice) {
-    utterance.voice = voice;
-    utterance.lang = voice.lang;
-  } else {
-    utterance.lang = "en-GB";
-  }
-
-  utterance.rate = 0.92;
-  utterance.pitch = 0.88;
-
-  window.speechSynthesis.speak(utterance);
 }
 
 function respond(command) {
