@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050a14">
+<title>A.T.O.M. | Personal Intelligence</title>
+
+<style>
+:root {
+  --bg: #050a14;
+  --panel: #0a1424;
+  --blue: #36bfff;
+  --cyan: #71f5ff;
+  --text: #e8f7ff;
+  --muted: #7894ad;
+  --border: rgba(54,191,255,.24);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 15%, #102a49 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 19px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(5,10,20,.9);
+}
+
+.brand {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(54,191,255,.6);
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.status {
+  font-size: 10px;
+  color: #69ffbd;
+  letter-spacing: 1px;
+}
+
+main {
+  width: min(100%, 900px);
+  margin: auto;
+  padding: 22px 16px 35px;
+}
+
+.section-label {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.core-area {
+  text-align: center;
+  padding: 15px 0 24px;
+}
+
+.core {
+  width: 188px;
+  height: 188px;
+  margin: 0 auto 22px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(54,191,255,.65);
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(54,191,255,.13),
+              inset 0 0 25px rgba(54,191,255,.13);
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.core::before,
+.core::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.core::before {
+  inset: 13px;
+  border: 2px dashed rgba(54,191,255,.6);
+  animation: rotate 22s linear infinite;
+}
+
+.core::after {
+  inset: 28px;
+  border: 1px solid var(--cyan);
+  box-shadow: inset 0 0 24px rgba(54,191,255,.24),
+              0 0 18px rgba(54,191,255,.24);
+}
+
+.core-inner {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  z-index: 1;
+  background: radial-gradient(circle, #e6ffff, #71f5ff 30%, #1688ff 65%, #092c67);
+  box-shadow: 0 0 25px #36bfff, 0 0 60px rgba(54,191,255,.55);
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+.core-title {
+  font-size: 17px;
+  letter-spacing: 5px;
+  font-weight: 700;
+}
+
+.core-caption {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 23px;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  background: linear-gradient(145deg, rgba(12,27,46,.96), rgba(5,12,23,.96));
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 0;
+}
+
+.panel-title {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.panel-value {
+  font-size: 13px;
+  color: var(--cyan);
+}
+
+.panel-note {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.conversation {
+  border: 1px solid var(--border);
+  background: rgba(7,15,27,.95);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.conversation-head {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+
+.messages {
+  padding: 14px;
+  height: 235px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 15px;
+  font-size: 13px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.message .speaker {
+  display: block;
+  color: var(--cyan);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.message.user .speaker { color: #b9c9d9; }
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  background: #050b15;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 13px 10px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus { border-color: var(--blue); }
+
+button {
+  cursor: pointer;
+  border: 1px solid rgba(54,191,255,.5);
+  border-radius: 6px;
+  background: #102a43;
+  color: var(--cyan);
+  padding: 11px 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+button:active { transform: scale(.97); }
+
+.send {
+  background: #1479a8;
+  color: white;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.tools button { min-height: 44px; }
+
+footer {
+  padding: 24px 5px 0;
+  text-align: center;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  line-height: 2;
+}
+
+@media (min-width: 650px) {
+  main { padding-top: 35px; }
+  .core { width: 220px; height: 220px; }
+  .grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .messages { height: 300px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="brand">A.T.O.M.</div>
+    <div class="subtitle">PERSONAL INTELLIGENCE SYSTEM</div>
+  </div>
+  <div class="status">● INTERFACE ONLINE</div>
+</header>
+
+<main>
+
+  <div class="section-label">01 / CORE SYSTEM</div>
+
+  <section class="core-area">
+    <div class="core" aria-label="Animated blue AI core">
+      <div class="core-inner"></div>
+    </div>
+    <div class="core-title">A.T.O.M.</div>
+    <div class="core-caption">ADAPTIVE TECHNOLOGY &amp; OPERATIONS MANAGER</div>
+  </section>
+
+  <div class="section-label">02 / SYSTEM DIAGNOSTICS</div>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="panel-title">INTERFACE</div>
+      <div class="panel-value">ONLINE</div>
+      <div class="panel-note">Command console active</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">AI CONNECTION</div>
+      <div class="panel-value">NOT CONNECTED</div>
+      <div class="panel-note">AI engine is a future step</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">MEMORY CORE</div>
+      <div class="panel-value">IN DEVELOPMENT</div>
+      <div class="panel-note">Persistent memory not installed</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">VOICE OUTPUT</div>
+      <div class="panel-value" id="voiceStatus">CHECKING</div>
+      <div class="panel-note">Uses available browser voices</div>
+    </div>
+  </section>
+
+  <div class="section-label">03 / COMMAND CONSOLE</div>
+
+  <section class="conversation">
+    <div class="conversation-head">A.T.O.M. // COMMUNICATION LINK</div>
+
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="message">
+        <span class="speaker">A.T.O.M.</span>
+        Systems initialized, sir. My interface is operational.
+        My more advanced capabilities are still under development.
+        How may I assist you?
+      </div>
+    </div>
+
+    <form class="input-row" id="commandForm">
+      <input
+        id="commandInput"
+        type="text"
+        placeholder="Enter a command, sir..."
+        autocomplete="off"
+        aria-label="Enter a command"
+      >
+      <button class="send" type="submit">SEND</button>
+    </form>
+  </section>
+
+  <section class="tools">
+    <button id="voiceButton">🔊 TEST BRITISH VOICE</button>
+    <button id="micButton">🎙 SPEAK A COMMAND</button>
+    <button id="emailButton">✉ COMPUTER SETUP EMAIL</button>
+    <button id="helpButton">⌘ AVAILABLE COMMANDS</button>
+  </section>
+
+  <footer>
+    PROJECT A.T.O.M. // BUILD 001<br>
+    PERSONAL INTELLIGENCE INITIATIVE<br>
+    CORE INTERFACE ONLINE · ADVANCED SYSTEMS PENDING
+  </footer>
+
+</main>
+
+<script>
+const messages = document.getElementById("messages");
+const input = document.getElementById("commandInput");
+const voiceStatus = document.getElementById("voiceStatus");
+
+function addMessage(speaker, text, isUser = false) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "message" + (isUser ? " user" : "");
+
+  const label = document.createElement("span");
+  label.className = "speaker";
+  label.textContent = speaker;
+
+  const content = document.createElement("div");
+  content.textContent = text;
+
+  wrapper.append(label, content);
+  messages.appendChild(wrapper);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function britishVoice() {
+  if (!("speechSynthesis" in window)) return null;
+
+  const voices = window.speechSynthesis.getVoices();
+
+  return voices.find(v =>
+    /^en-GB/i.test(v.lang) &&
+    /Daniel|Arthur|Oliver|George|male/i.test(v.name)
+  ) || voices.find(v =>
+    /^en-GB/i.test(v.lang)
+  ) || null;
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) {
+    addMessage("SYSTEM", "Speech output is not supported in this browser.");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  const voice = britishVoice();
+
+  if (voice) {
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
+  } else {
+    utterance.lang = "en-GB";
+  }
+
+  utterance.rate = 0.92;
+  utterance.pitch = 0.88;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function respond(command) {
+  const text = command.toLowerCase().trim();
+  let answer;
+
+  if (
+    text.includes("are you awake") ||
+    text.includes("you up") ||
+    text.includes("are you there")
+  ) {
+    answer = "For you, sir, always.";
+  } else if (
+    text === "hello" ||
+    text.startsWith("hello ") ||
+    text === "hi" ||
+    text.startsWith("hey atom") ||
+    text.startsWith("hello atom")
+  ) {
+    answer = "Good day, sir. I'm here and ready to assist.";
+  } else if (
+    text.includes("what is your name") ||
+    text.includes("who are you")
+  ) {
+    answer = "I am A.T.O.M., your personal intelligence project. My capabilities are still being developed, sir.";
+  } else if (
+    text.includes("what time") ||
+    text === "time"
+  ) {
+    answer = "The current time on this device is " +
+      new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      }) + ", sir.";
+  } else if (
+    text.includes("what date") ||
+    text.includes("what day") ||
+    text === "date"
+  ) {
+    answer = "Today is " +
+      new Date().toLocaleDateString([], {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }) + ", sir.";
+  } else if (
+    text.includes("help") ||
+    text.includes("available commands")
+  ) {
+    answer = "You can ask whether I'm awake, ask my name, check the time or date, test my voice, or prepare your computer setup email. My general AI reasoning and computer control are not connected yet, sir.";
+  } else if (
+    text.includes("computer setup") ||
+    text.includes("send myself") ||
+    text.includes("setup email")
+  ) {
+    answer = "Use the Computer Setup Email button below, sir. It will prepare an email containing a link to this interface.";
+  } else if (
+    text.includes("thank you")
+  ) {
+    answer = "You're most welcome, sir. Merely doing my job. Though I do appreciate the recognition.";
+  } else {
+    answer = "I have received your request, sir. My general AI engine is not connected yet, so I cannot intelligently answer that question at present. That is one of the next systems we'll build.";
+  }
+
+  addMessage("A.T.O.M.", answer);
+  speak(answer);
+}
+
+document.getElementById("commandForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const command = input.value.trim();
+  if (!command) return;
+
+  addMessage("YOU", command, true);
+  input.value = "";
+  respond(command);
+});
+
+document.getElementById("voiceButton").addEventListener("click", () => {
+  speak("For you, sir, always.");
+});
+
+document.getElementById("helpButton").addEventListener("click", () => {
+  const help = "Available commands: Are you awake?; You up?; Who are you?; What time is it?; What is today's date?; Help; Thank you.";
+  addMessage("A.T.O.M.", help);
+});
+
+document.getElementById("emailButton").addEventListener("click", () => {
+  const subject = encodeURIComponent("A.T.O.M. — Computer Setup");
+  const pageLink = window.location.href;
+
+  const body = encodeURIComponent(
+    "Good day.\n\nHere is the link to my A.T.O.M. assistant interface:\n\n" +
+    pageLink +
+    "\n\nOpen this link on your computer to access the interface. " +
+    "Additional desktop software will need to be installed separately."
+  );
+
+  window.location.href =
+    "mailto:?subject=" + subject + "&body=" + body;
+});
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const micButton = document.getElementById("micButton");
+
+if (SpeechRecognition) {
+  micButton.addEventListener("click", () => {
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-GB";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    micButton.textContent = "🎙 LISTENING...";
+
+    recognition.onresult = event => {
+      const spoken = event.results[0][0].transcript;
+      input.value = spoken;
+      micButton.textContent = "🎙 SPEAK A COMMAND";
+      document.getElementById("commandForm").requestSubmit();
+    };
+
+    recognition.onerror = () => {
+      micButton.textContent = "🎙 SPEAK A COMMAND";
+      addMessage("SYSTEM", "Microphone recognition failed. You can type commands instead.");
+    };
+
+    recognition.onend = () => {
+      micButton.textContent = "🎙 SPEAK A COMMAND";
+    };
+
+    try {
+      recognition.start();
+    } catch (error) {
+      micButton.textContent = "🎙 SPEAK A COMMAND";
+      addMessage("SYSTEM", "Could not start microphone recognition. Please try again.");
+    }
+  });
+} else {
+  micButton.addEventListener("click", () => {
+    addMessage("SYSTEM", "This browser does not support the required speech recognition interface. Please type your command instead.");
+  });
+}
+
+function updateVoiceStatus() {
+  if (!("speechSynthesis" in window)) {
+    voiceStatus.textContent = "UNAVAILABLE";
+    return;
+  }
+
+  const voices = window.speechSynthesis.getVoices();
+  voiceStatus.textContent = britishVoice()
+    ? "BRITISH VOICE FOUND"
+    : voices.length
+      ? "DEFAULT VOICE AVAILABLE"
+      : "CHECK ON FIRST USE";
+}
+
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = updateVoiceStatus;
+  updateVoiceStatus();
+} else {
+  updateVoiceStatus();
+}
+</script>
+
+</body>
+</html>
